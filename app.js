@@ -11,17 +11,24 @@ class Calculator{
     }
 
     clear(){
-        this.operatrion = undefined
+        this.operation = undefined
         this.currentOperand = ''
         this.previousOperand = ''
     }
 
     addNumber(number){
+        if(number === "." && this.currentOperand.includes(".")) return
         this.currentOperand = this.currentOperand.toString() + number.toString();
     }
 
-    chosenOperator(operatrion){
-
+    chosenOperator(operation){
+        if(this.currentOperand == "") return
+        if(this.previousOperand != ""){
+            this.compute()
+        }
+        this.operation = operation
+        this.previousOperand = this.currentOperand 
+        this.currentOperand = ""
     }
 
     compute(){
@@ -30,6 +37,7 @@ class Calculator{
     
     update(){
         this.currentOperandText.innerText = this.currentOperand
+        this.previousOperandText.innerText = this.previousOperand
     }
 }
 
@@ -50,4 +58,15 @@ numberButtons.forEach( button => {
         calculator.addNumber(button.innerHTML)
         calculator.update()
     })
+})
+
+operationButtons.forEach( button => {
+    button.addEventListener("click",() => {
+        calculator.chosenOperator(button.innerHTML)
+        calculator.update()
+    })
+})
+
+equalsButton.addEventListener("click", button => {
+    
 })
