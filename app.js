@@ -7,7 +7,7 @@ class Calculator{
     }
 
     delete(){
-
+        this.currentOperand = this.currentOperand.toString().slice(0 , -1)
     }
 
     clear(){
@@ -32,12 +32,44 @@ class Calculator{
     }
 
     compute(){
-
+        let computation
+        let prev = parseFloat(this.previousOperand)
+        let curr = parseFloat(this.currentOperand)
+        if(isNaN(curr) || isNaN(prev)) return
+        switch(this.operation){
+            case "+":
+                computation = prev + curr
+                break
+            case "-":
+                computation = prev - curr
+                break
+            case "*":
+                computation = prev * curr
+                break
+            case "/":
+                computation = prev / curr
+                break
+            default: 
+            return
+        }
+        this.currentOperand = computation
+        this.operation = undefined
+        this.previousOperand = ""
     }
-    
+    getNumberDisplay(number){
+        const stringNumber = number.toString()
+        const digits = parseFloat(stringNumber.split(".")[0])
+        const decimal = stringNumber.split(".")[1]
+        const float = parseFloat(number)
+        if(isNaN(float)) return ''
+        return number.toLocaleString('en')
+    }
     update(){
-        this.currentOperandText.innerText = this.currentOperand
-        this.previousOperandText.innerText = this.previousOperand
+        this.currentOperandText.innerText = this.getNumberDisplay(this.currentOperand)
+        if(this.operation != null){
+           this.previousOperandText.innerText = `${this.previousOperand} ${this.operation}`
+
+        }
     }
 }
 
@@ -68,5 +100,18 @@ operationButtons.forEach( button => {
 })
 
 equalsButton.addEventListener("click", button => {
+    calculator.compute()
+    calculator.update()
+})
+
+allclearButton.addEventListener("click", button => {
+    calculator.clear()
+    calculator.update()
+    
+})
+
+deleteButton.addEventListener("click", button => {
+    calculator.delete()
+    calculator.update()
     
 })
