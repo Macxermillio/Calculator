@@ -60,15 +60,25 @@ class Calculator{
         const stringNumber = number.toString()
         const digits = parseFloat(stringNumber.split(".")[0])
         const decimal = stringNumber.split(".")[1]
-        const float = parseFloat(number)
-        if(isNaN(float)) return ''
-        return number.toLocaleString('en')
+        let intDisplay
+        if(isNaN(digits)){
+            intDisplay= ""
+        }else{
+            intDisplay = digits.toLocaleString('en', {maximumFractionDigits: 0})
+        }
+        if(decimal != null){
+           return `${intDisplay}.${decimal}` 
+        } else {
+            return `${intDisplay}`
+        }
     }
     update(){
         this.currentOperandText.innerText = this.getNumberDisplay(this.currentOperand)
         if(this.operation != null){
-           this.previousOperandText.innerText = `${this.previousOperand} ${this.operation}`
+           this.previousOperandText.innerText = `${this.getNumberDisplay(this.previousOperand)} ${this.operation}`
 
+        } else {
+            this.previousOperand.innerText = ""
         }
     }
 }
